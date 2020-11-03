@@ -11,4 +11,4 @@ function [Qe]=elq(le,q,qt);
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Qe = (h/2)*[q, -q*h/6, qt, q, q*h/6, qt]; %Element load vector using the equation from page 38 as well as eq. 79
+Qe = (le/2)*[q, -q*le/6, qt, q, q*le/6, qt]; %Element load vector using the equation from page 38 as well as eq. 79
