@@ -54,9 +54,21 @@ function [K,Q,M,Ksigma]=assemble(le,EI,GJ,I0,A,J0,q,qt,S,T,m,P,ndof,nelem);
         
         for i=1:6
             for j=1:6
-                deltaK(firstNodeBaseIndex +i-1, secondNodeBaseIndex +j-1) = Ke(i,j);
+                if i<=3
+                    baseI = firstNodeBaseIndex +i;
+                else
+                    baseI = secondNodeBaseIndex +i - 3;
+                end
+                if j<=3
+                    baseJ = firstNodeBaseIndex + j;
+                else
+                    baseJ = secondNodeBaseIndex +j - 3;
+                end                
+                
+                deltaK(baseI, baseJ) = Ke(i,j);
             end
         end
+        K = K + deltaK;
     end
 
 
