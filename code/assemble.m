@@ -50,9 +50,11 @@ function [K,Q,M,Ksigma]=assemble(le,EI,GJ,I0,A,J0,q,qt,S,T,m,P,ndof,nelem);
         
         [Ke]=elk(le,EI,GJ);
         [Kesigma]=elksigma(le,P,I0,A);
+        [Qe]=elq(le,q,qt);              
         
         deltaK = zeros(ndof);
         deltaKsigma = zeros(ndof);
+        deltaQload = zeros(ndof,1);
         
         for i=1:6
             for j=1:6
@@ -69,10 +71,12 @@ function [K,Q,M,Ksigma]=assemble(le,EI,GJ,I0,A,J0,q,qt,S,T,m,P,ndof,nelem);
                 
                 deltaK(baseI, baseJ) = Ke(i,j);
                 deltaKsigma(baseI, baseJ) = Kesigma(i,j);
+                deltaQload(baseI) = Qe(i);
             end
         end
         K = K + deltaK;
         Ksigma = Ksigma + deltaKsigma;
+        Q = Q + deltaQload;
     end
 
 
