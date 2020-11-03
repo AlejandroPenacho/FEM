@@ -24,11 +24,13 @@ function [defl,teta,fi,umax,tetamax,fimax]=bending(Ks,Qs,K,Q,nnode,node_z);
 
     % Present displacements at the free end
     
-    [umax, tetamax, fimax] = uReducedVector(end-2:end);
+    umax    = uReducedVector(end-2);
+    tetamax = uReducedVector(end-1);
+    fimax   = uReducedVector(end);
 
     % Present reaction forces
     
-    RF = K * [0;0;0; uReducedVector];
+    RF = K * [0;0;0; uReducedVector] - Q;
 
     % Create result vector containing deflections, rotations and twist
     
@@ -41,7 +43,7 @@ function [defl,teta,fi,umax,tetamax,fimax]=bending(Ks,Qs,K,Q,nnode,node_z);
 
     % Normalise deflections, rotations and twist and plot results
     
-    normalizedDefl = def / umax;
+    normalizedDefl = defl / umax;
     normalizedTeta = teta / tetamax;
     normalizedFi = fi / fimax;
     
@@ -51,20 +53,20 @@ function [defl,teta,fi,umax,tetamax,fimax]=bending(Ks,Qs,K,Q,nnode,node_z);
     title("Deflection")
     scatter(node_z, normalizedDefl)
     xlabel("z")
-    ylabel("u/u_max")
-    minor grid
+    ylabel("u/u_{max}")
+    grid minor
   
     subplot(3,1,2)
     title("Teta")
     scatter(node_z, normalizedTeta)
     xlabel("z")
-    ylabel("u/u_max")
-    minor grid
+    ylabel("\theta/\theta_{max}")
+    grid minor
     
     subplot(3,1,3)
     title("Fi")
     scatter(node_z, normalizedFi)
     xlabel("z")
-    ylabel("u/u_max")
-    minor grid
+    ylabel("\phi/\phi_{max}")
+    grid minor
 end
