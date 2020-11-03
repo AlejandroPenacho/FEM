@@ -49,8 +49,10 @@ function [K,Q,M,Ksigma]=assemble(le,EI,GJ,I0,A,J0,q,qt,S,T,m,P,ndof,nelem);
         secondNodeBaseIndex = (secondNode-1) * 3;
         
         [Ke]=elk(le,EI,GJ);
+        [Kesigma]=elksigma(le,P,I0,A);
         
         deltaK = zeros(ndof);
+        deltaKsigma = zeros(ndof);
         
         for i=1:6
             for j=1:6
@@ -66,9 +68,11 @@ function [K,Q,M,Ksigma]=assemble(le,EI,GJ,I0,A,J0,q,qt,S,T,m,P,ndof,nelem);
                 end                
                 
                 deltaK(baseI, baseJ) = Ke(i,j);
+                deltaKsigma(baseI, baseJ) = Kesigma(i,j);
             end
         end
         K = K + deltaK;
+        Ksigma = Ksigma + deltaKsigma;
     end
 
 
