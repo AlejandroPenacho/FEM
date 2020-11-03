@@ -20,7 +20,7 @@ function [defl,teta,fi,umax,tetamax,fimax]=bending(Ks,Qs,K,Q,nnode,node_z);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
     % Solve system of equations
-    uReducedVector = solve(Ks,Qs);
+    uReducedVector = linsolve(Ks,Qs);
 
     % Present displacements at the free end
     

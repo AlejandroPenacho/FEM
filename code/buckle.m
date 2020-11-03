@@ -15,6 +15,9 @@ function [pb,ub]=buckle(Ks,Ksigmas,nnode,node_z);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Calculate eigenvalues and eigenvectors
+[ub,pb] = eig(Ks, -Ksigma);
+
+[ndof, ~] = size(Ks);
 
 % Split bending and twist modes into separate vectors
 
