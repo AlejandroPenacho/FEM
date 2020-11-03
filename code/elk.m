@@ -22,7 +22,7 @@ Ke(2,2:6) = (2*EI/le)*[2, 0, 3/le, 1, 0];
 Ke(3,3:6) = (GJ/le)*[1, 0, 0, -1];
 Ke(4,4:6) = (6*EI/le^2)*[2/le, 1, 0];
 Ke(5,5:6) = (2*EI/le)*[2, 0];
-Ke(2,6)   = GJ/le;
+Ke(6,6)   = GJ/le;
 
 %Making it symmetric
 Ke = (Ke+Ke') - eye(size(Ke,1)).*diag(Ke);
