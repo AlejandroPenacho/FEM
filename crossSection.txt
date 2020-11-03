@@ -1,0 +1,24 @@
+#		b[mm]		h[mm]		t_f[mm]		t_w[mm]
+
+7		40		40		3		1	
+
+
+Area:
+
+	A  = h*t_w + 2*b*t_f = 280 mm
+
+X_cg (respect to lower left corner):
+
+	X_cg = (2 * t_f * b/2) / A = 3/7 mm
+
+Y_cg (respect to lower left corner):
+
+	Y_cg = h / 2 = 20 mm
+
+Ixx:
+
+	Ixx = (h^3 * t_w)/12 + (h^2 * b * t_f)/2 = 304,000/3 mm^4
+
+J:
+
+	J = 1/3 * [ 2 * b * t_f^3 + h * t_w^3 ] = 2200/3 mm^4
