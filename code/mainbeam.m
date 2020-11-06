@@ -51,7 +51,7 @@ Ksigmas=Ksigma(4:ndof,4:ndof);
 
 % Solve beam bending and torsion equation and present results
 
-[defl,teta,fi,wmax,tmax,fimax]=bending(Ks,Qs,K,Q,nnode,node_z);
+[defl,teta,fi,wmax,tmax,fimax,RF]=bending(Ks,Qs,K,Q,nnode,node_z,S,q,T,E,I,L);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Solve beam buckling equation and plot results

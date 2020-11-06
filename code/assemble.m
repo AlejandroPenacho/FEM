@@ -77,10 +77,12 @@ function [K,Q,M,Ksigma]=assemble(le,EI,GJ,I0,A,J0,q,qt,S,T,m,P,ndof,nelem);
         K = K + deltaK;
         Ksigma = Ksigma + deltaKsigma;
         Q = Q + deltaQload;
+       
     end
 
 
-
+Q(end-2) = Q(end-2) + S;
+Q(end-1) = Q(end-1) + T;
 
 end
 
