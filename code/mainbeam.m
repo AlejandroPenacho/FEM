@@ -60,5 +60,6 @@ Ksigmas=Ksigma(4:ndof,4:ndof);
 % ub is a matrix of corresponding buckling modes (as columns)
 % (Column i of ub is buckling mode of buckling load (i,i) in pb)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 [pb,ub]=buckle(Ks,Ksigmas,nnode,node_z);
 
