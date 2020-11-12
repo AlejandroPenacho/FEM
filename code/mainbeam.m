@@ -21,13 +21,13 @@ J0=I0*ro;	% Mass moment of inertia [kgm]
 % Loads and masses
 m=A*ro;	% mass per unit length of elements [kg/m]
 q=1;           % Distributed load [N/m]
-qt=0;		% Distributed torque [Nm/m]
+qt=1;		% Distributed torque [Nm/m]
 S=0;           % Concentrated load at end of beam [N]
 T=0;		% Beam end torque [Nm]
 P=-1.;		% Buckling load [N]
 
 % Element input data
-nelem=1;		% number of elements
+nelem=10;		% number of elements
 le=L/nelem;		% length of elements for even distribution
 ndof=3*(nelem+1);	% number of degrees of freedom
 nnode=nelem+1;		% number of nodes

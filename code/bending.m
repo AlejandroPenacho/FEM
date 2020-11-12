@@ -80,12 +80,12 @@ end
 
 defl_analytical  = defl_S + defl_T + defl_q;
 teta_analytical = teta_S + teta_T + teta_q;
-normalizedDef_an = defl_analytical/max(abs(defl_analytical));
-normalizedTeta_an = teta_analytical/max(abs(teta_analytical));
+normalizedDef_an = defl_analytical/umax;
+normalizedTeta_an = teta_analytical/tetamax;
 
 
 figure (1)
-FEMplot(node_z, uVector, umax, tetamax, fimax)
+lineInstances = FEMplot(node_z, uVector, umax, tetamax, fimax);
 
 
 
@@ -113,26 +113,24 @@ FEMplot(node_z, uVector, umax, tetamax, fimax)
 subplot(3,1,1)
 title("Deflection")
 hold on
-plot(x, flip(normalizedDef_an), 'color', [0.4660, 0.6740, 0.1880])
+h = plot(x, flip(normalizedDef_an), '--','LineWidth', 1.5, 'color', [0.4660, 0.6740, 0.1880]);
 hold off
-xlabel("z")
-ylabel("u/u_{max}")
-grid minor
+legend([lineInstances{1}, h], ["FEM", "Analytical"],'location' ,'northwest')
 
 subplot(3,1,2)
 title("Teta")
 hold on
-plot(x, flip(normalizedTeta_an), 'color', [0.4660, 0.6740, 0.1880])
+h = plot(x, flip(normalizedTeta_an), '--','LineWidth', 1.5,'color', [0.4660, 0.6740, 0.1880]);
 hold off
-xlabel("z")
-ylabel("\theta/\theta_{max}")
-grid minor
+legend([lineInstances{2}, h], ["FEM", "Analytical"],'location' ,'northwest')
 
 end
 
 
-function FEMplot(node_z, uVector, umax, tetamax, fimax)
+function lineInstances = FEMplot(node_z, uVector, umax, tetamax, fimax)
 
+
+    lineInstances = cell(3,1);
     % Functions N are necessary to get the shape of the beam between nodes
 
     Nfun = @(x) [ 1      - 3*x.^2 + 2*x.^3 ; ...
@@ -153,11 +151,15 @@ function FEMplot(node_z, uVector, umax, tetamax, fimax)
         if i<length(node_z)
             h = node_z(i+1) - node_z(i);
             z = linspace(node_z(i), node_z(i+1), 20);
-            plot(z, Nfun(linspace(0,1,20))' * ([uVector(3*(i-1)+[1,2]); uVector(3*i+[1,2])].*[1;h;1;h])/umax, 'color', [0, 0.4470, 0.7410])
+            lineInstances{1} = plot(z, Nfun(linspace(0,1,20))' * ([uVector(3*(i-1)+[1,2]); uVector(3*i+[1,2])].*[1;h;1;h])/umax,'LineWidth', 2, 'color', [0, 0.4470, 0.7410]);
         end
         scatter(node_z(i), uVector(3*(i-1)+1)/umax,'filled','MarkerFaceColor', [0, 0.4470, 0.7410])
     end
     hold off
+    xlabel("z")
+    ylabel("u/u_{max}")
+    grid minor
+    
     
     subplot(3,1,2)
     hold on
@@ -165,21 +167,28 @@ function FEMplot(node_z, uVector, umax, tetamax, fimax)
         if i<length(node_z)
             h = node_z(i+1) - node_z(i);
             z = linspace(node_z(i), node_z(i+1), 20);
-            plot(z, Bfun(linspace(0,1,20))' * ([uVector(3*(i-1)+[1,2]); uVector(3*i+[1,2])].*[1/h;1;1/h;1])/tetamax, 'color', [0, 0.4470, 0.7410])
+            lineInstances{2} = plot(z, Bfun(linspace(0,1,20))' * ([uVector(3*(i-1)+[1,2]); uVector(3*i+[1,2])].*[1/h;1;1/h;1])/tetamax, 'LineWidth', 2, 'color', [0, 0.4470, 0.7410]);
         end
         scatter(node_z(i), -uVector(3*(i-1)+2)/tetamax,'filled','MarkerFaceColor', [0, 0.4470, 0.7410])
     end
     hold off
+    xlabel("z")
+    ylabel("\theta/\theta_{max}")
+    grid minor
+    
     
     subplot(3,1,3)
     hold on
     for i=1:length(node_z)
         if i<length(node_z)
             z = linspace(node_z(i), node_z(i+1), 20);
-            plot(z, Fifun(linspace(0,1,20))' * ([uVector(3*(i-1)+3); uVector(3*i+3)])/fimax, 'color', [0, 0.4470, 0.7410])
+            lineInstances{3} = plot(z, Fifun(linspace(0,1,20))' * ([uVector(3*(i-1)+3); uVector(3*i+3)])/fimax,'LineWidth', 2, 'color', [0, 0.4470, 0.7410]);
         end
-        scatter(node_z(i), -uVector(3*(i-1)+3)/fimax,'filled','MarkerFaceColor', [0, 0.4470, 0.7410])
+        scatter(node_z(i), uVector(3*(i-1)+3)/fimax,'filled','MarkerFaceColor', [0, 0.4470, 0.7410])
     end
     hold off
+    xlabel("z")
+    ylabel("\phi/\phi_{max}")
+    grid minor
 
 end
