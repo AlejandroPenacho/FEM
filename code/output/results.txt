@@ -1,0 +1,6 @@
+Bending buckling modes
+
+Mode nº			1			2
+Load (kN)		17.633755		228.268467
+
+

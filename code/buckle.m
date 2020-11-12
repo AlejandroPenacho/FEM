@@ -61,9 +61,16 @@ function [pb,ub]=buckle(Ks,Ksigmas,nnode,node_z);
     
     % Normalise deflections, rotations and twist for plotting purposes (without risking to mix up signs or divide by zero)
 
+    if nnode == 2
+        nBendingModesPlotting = 1;
+        nTwistModesPlotting = 1;
+    else
+        nBendingModesPlotting = 2;
+        nTwistModesPlotting = 2;        
+    end
+    
     %% Bending Modes
     
-    nBendingModesPlotting = 2;
     
     bendingLegend = cell(nBendingModesPlotting,1);
     
@@ -126,8 +133,6 @@ function [pb,ub]=buckle(Ks,Ksigmas,nnode,node_z);
     fclose(fID);
     
     %% Twist Modes
-    
-    nTwistModesPlotting = 2;
     
     twistLegend = cell(nTwistModesPlotting,1);
     
