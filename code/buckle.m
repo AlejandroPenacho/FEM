@@ -63,10 +63,8 @@ function [pb,ub]=buckle(Ks,Ksigmas,nnode,node_z);
 
     if nnode == 2
         nBendingModesPlotting = 1;
-        nTwistModesPlotting = 1;
     else
-        nBendingModesPlotting = 2;
-        nTwistModesPlotting = 2;        
+        nBendingModesPlotting = 2;   
     end
     
     %% Bending Modes
@@ -134,26 +132,7 @@ function [pb,ub]=buckle(Ks,Ksigmas,nnode,node_z);
     
     %% Twist Modes
     
-    twistLegend = cell(nTwistModesPlotting,1);
-    
-    for i=1:nTwistModesPlotting
-        twistLegend{i} = sprintf("M_{z}= %.2f kN m", twistLambdas(i)/1000);
-    end
 
-    maxTwistVector = max(abs(twistVectors(3:3:end,:)));
-    
-    figure
-    title("Twist modes")
-    
-    hold on
-    for i = 1:nBendingModesPlotting
-        scatter(node_z, [0; twistVectors(3:3:end,i)/maxTwistVector(i)], 'filled')
-    end
-    hold off
-    grid minor
-    legend(twistLegend, "location", "northwest")
-    xlabel("z")
-    ylabel("\phi/\phi_{max}")
       
     
 end
