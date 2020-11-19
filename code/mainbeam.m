@@ -11,7 +11,7 @@ fID = fopen("output/results.txt","w");
 fclose(fID);
 
 % Definitions and input data
-L=1;		% Length [m]
+L=2;		% Length [m]
 E=7E+10;	% Youngs modulus [N/m2]
 G=2.6923E+10;	% Shear modulus [N/m2]
 I=304E-9 / 3;		% Moment of inertia about x-axis [m4]
@@ -26,9 +26,9 @@ J0=I0*ro;	% Mass moment of inertia [kgm]
 % Loads and masses
 m=A*ro;	% mass per unit length of elements [kg/m]
 q=1;           % Distributed load [N/m]
-qt=0;		% Distributed torque [Nm/m]
+qt=1;		% Distributed torque [Nm/m]
 S=0;           % Concentrated load at end of beam [N]
-T=1;		% Beam end torque [Nm]
+T=0;		% Beam end torque [Nm]
 P=-1.;		% Buckling load [N]
 
 % Element input data
@@ -56,7 +56,7 @@ Ksigmas=Ksigma(4:ndof,4:ndof);
 
 % Solve beam bending and torsion equation and present results
 
-[defl,teta,fi,wmax,tmax,fimax,RF]=bending(Ks,Qs,K,Q,nnode,node_z,S,q,T,E,I,L);
+[defl,teta,fi,wmax,tmax,fimax,RF]=bending(Ks,Qs,K,Q,nnode,node_z,S,q,T,E,I,L,G,J,qt);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Solve beam buckling equation and plot results
@@ -66,5 +66,5 @@ Ksigmas=Ksigma(4:ndof,4:ndof);
 % (Column i of ub is buckling mode of buckling load (i,i) in pb)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[pb,ub]=buckle(Ks,Ksigmas,nnode,node_z);
+[pb,ub]=buckle(Ks,Ksigmas,nnode,node_z,EI,L);
 

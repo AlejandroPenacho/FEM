@@ -1,4 +1,4 @@
-function [defl,teta,fi,umax,tetamax,fimax,RF]=bending(Ks,Qs,K,Q,nnode,node_z,S,q,T,E,I,L);
+function [defl,teta,fi,umax,tetamax,fimax,RF]=bending(Ks,Qs,K,Q,nnode,node_z,S,q,T,E,I,L,G,J,qt);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Calculate deformed beam bending and torsion shape and plot results
@@ -87,14 +87,14 @@ for i = 1:length(x)
     end
     defl_q(i) = q*L^4/(24*E*I) * (x(i)^4-4*x(i)+3);
     teta_q(i) = q*L^3/(6*E*I) * (1-x(i)^3);
-    
+    phi(i) = L/(G*J)*(T+qt*L)*x(i) - qt*L^2/(2*G*J)*x(i)^2;
 end
 
 defl_analytical  = defl_S + defl_q; %defl_T
 teta_analytical = teta_S + teta_q; %teta_T
 normalizedDef_an = defl_analytical/umax;
 normalizedTeta_an = teta_analytical/tetamax;
-
+normalizedPhi_an = phi/fimax;
 
 figure (1)
 lineInstances = FEMplot(node_z, uVector, umax, tetamax, fimax);
@@ -133,6 +133,13 @@ subplot(3,1,2)
 title("Teta")
 hold on
 h = plot(x*L, flip(normalizedTeta_an), '--','LineWidth', 1.5,'color', [0.4660, 0.6740, 0.1880]);
+hold off
+legend([lineInstances{2}, h], ["FEM", "Analytical"],'location' ,'northwest')
+
+subplot(3,1,3)
+title("Phi")
+hold on
+h = plot(x*L, normalizedPhi_an, '--','LineWidth', 1.5,'color', [0.4660, 0.6740, 0.1880]);
 hold off
 legend([lineInstances{2}, h], ["FEM", "Analytical"],'location' ,'northwest')
 

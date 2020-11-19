@@ -1,4 +1,4 @@
-function [pb,ub]=buckle(Ks,Ksigmas,nnode,node_z);
+function [pb,ub]=buckle(Ks,Ksigmas,nnode,node_z,EI,L);
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Solve beam buckling equation
@@ -94,47 +94,41 @@ function [pb,ub]=buckle(Ks,Ksigmas,nnode,node_z);
     subplot(2,1,1)
     legend(lineInstances, bendingLegend, 'location' ,'northwest')
     
-%     subplot(2,1,1)
-%     title("Displacement")
-%     
-%     hold on
-%     for i = 1:nBendingModesPlotting
-%         scatter(node_z, [0; bendingVectors(1:3:end,i)/maxDisplacementVector(i)], 'filled')
-%     end
-%     hold off
-%     grid minor
-%     legend(bendingLegend, "location", "northwest")
-%     xlabel("z")
-%     ylabel("u/u_{max}")
-%     
-%     
-%     subplot(2,1,2)
-%     title("Rotation")
-%     hold on
-%     for i = 1:nBendingModesPlotting
-%         scatter(node_z, [0; bendingVectors(2:3:end,i)/maxRotationVector(i)], 'filled')
-%     end
-%     hold off
-%     grid minor
-%     xlabel("z")
-%     ylabel("\theta/\theta_{max}")
-    
-    
-    % Results are written to a text file
-    
-    fID = fopen("output/results.txt", "a");
-    
-    fprintf(fID, "\n\n\nBending buckling modes\n\n");
-    
-    fprintf(fID, "Mode nº");
-    for i=1:nBendingModes
-        fprintf(fID, "\t\t\t%d", i);
-    end
-    
-    fprintf(fID, "\nLoad (kN)");
-    for i=1:nBendingModes
-        fprintf(fID, "\t\t%3f", bendingLambdas(i)/1000);
-    end    
+
+	% Critical load
+
+	for m = 1:nBendingModes
+	    P_cr(m) = ((2*m-1)^2 * pi^2 * EI)/(4*L^2);
+	    Error_Load(m) = 100*(bendingLambdas(m)-P_cr(m))/P_cr(m);
+	end
+
+
+	% Results are written to a text file
+
+	fID = fopen("output/results.txt", "a");
+
+	fprintf(fID, "\n\n\nBending buckling modes\n\n");
+
+	fprintf(fID, "Mode nº");
+	for i=1:nBendingModes
+	    fprintf(fID, "\t\t\t%d", i);
+	end
+
+	fprintf(fID, "\nLoad (kN)");
+	for i=1:nBendingModes
+	    fprintf(fID, "\t\t%.3f", bendingLambdas(i)/1000);
+	end
+
+	fprintf(fID, "\nAnalyticalLoad (kN)");
+	for i=1:nBendingModes
+	    fprintf(fID, "\t\t%.3f", P_cr(i)/1000);
+	end
+
+	fprintf(fID, "\nError_Loads (kN)");
+	for i=1:nBendingModes
+	    fprintf(fID, "\t\t%.3f", Error_Load(i));
+	end
+
     
     
     
