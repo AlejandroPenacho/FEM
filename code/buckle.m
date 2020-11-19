@@ -112,9 +112,9 @@ function [pb,ub]=buckle(Ks,Ksigmas,nnode,node_z);
     
     % Results are written to a text file
     
-    fID = fopen("output/results.txt", "w");
+    fID = fopen("output/results.txt", "a");
     
-    fprintf(fID, "Bending buckling modes\n\n");
+    fprintf(fID, "\n\n\nBending buckling modes\n\n");
     
     fprintf(fID, "Mode nº");
     for i=1:nBendingModes
@@ -126,16 +126,20 @@ function [pb,ub]=buckle(Ks,Ksigmas,nnode,node_z);
         fprintf(fID, "\t\t%3f", bendingLambdas(i)/1000);
     end    
     
-    fprintf(fID, "\n\n\n");
     
-    fclose(fID);
     
     %% Twist Modes
     
-
+    fprintf(fID, "\n\n\nTwist buckling\n\n");
+    if (max(twistLambdas)-min(twistLambdas))/max(twistLambdas) < 10^-10
+        fprintf(fID, "All eigenvalues for twist buckling coincide\n");
+        fprintf(fID, "Load (kN): %.3f", twistLambdas(1)/1000);
+    end
       
-    
+    fclose(fID);
 end
+
+
 
 
 % Plot buckling modes

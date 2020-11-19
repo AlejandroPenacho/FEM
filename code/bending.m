@@ -49,6 +49,13 @@ normalizedTeta = teta / tetamax;
 normalizedFi = fi / fimax;
 
 
+fID = fopen("output/results.txt","a");
+fprintf(fID, "Bending results\n\n");
+fprintf(fID, "Max. displacement:\t%.3f mm\n", umax*1000 );
+fprintf(fID, "Max. bending angle:\t%.3f °\n", tetamax*180/pi );
+fprintf(fID, "Max. torsion angle:\t%.3f °\n", fimax*180/pi );
+
+fclose(fID);
 %Calculating analytical results to compare values
 
 
@@ -73,13 +80,13 @@ for i = 1:length(x)
         teta_S(i) = S*L^2/(2*E*I);
         teta_T(i) = T*L/(E*I);
     end
-    defl_q(i) = q*L^3/(24*E*I) * (x(i)^4-4*x(i)+3);
-    teta_q(i) = q*L^2/(6*E*I) * (1-x(i)^3);
+    defl_q(i) = q*L^4/(24*E*I) * (x(i)^4-4*x(i)+3);
+    teta_q(i) = q*L^3/(6*E*I) * (1-x(i)^3);
     
 end
 
-defl_analytical  = defl_S + defl_T + defl_q;
-teta_analytical = teta_S + teta_T + teta_q;
+defl_analytical  = defl_S + defl_q; %defl_T
+teta_analytical = teta_S + teta_q; %teta_T
 normalizedDef_an = defl_analytical/umax;
 normalizedTeta_an = teta_analytical/tetamax;
 
@@ -113,14 +120,14 @@ lineInstances = FEMplot(node_z, uVector, umax, tetamax, fimax);
 subplot(3,1,1)
 title("Deflection")
 hold on
-h = plot(x, flip(normalizedDef_an), '--','LineWidth', 1.5, 'color', [0.4660, 0.6740, 0.1880]);
+h = plot(x*L, flip(normalizedDef_an), '--','LineWidth', 1.5, 'color', [0.4660, 0.6740, 0.1880]);
 hold off
 legend([lineInstances{1}, h], ["FEM", "Analytical"],'location' ,'northwest')
 
 subplot(3,1,2)
 title("Teta")
 hold on
-h = plot(x, flip(normalizedTeta_an), '--','LineWidth', 1.5,'color', [0.4660, 0.6740, 0.1880]);
+h = plot(x*L, flip(normalizedTeta_an), '--','LineWidth', 1.5,'color', [0.4660, 0.6740, 0.1880]);
 hold off
 legend([lineInstances{2}, h], ["FEM", "Analytical"],'location' ,'northwest')
 
