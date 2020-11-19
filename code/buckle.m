@@ -82,32 +82,42 @@ function [pb,ub]=buckle(Ks,Ksigmas,nnode,node_z);
     maxRotationVector = max(abs(bendingVectors(2:3:end,:)));
     
     figure
+
     sgtitle("Bending modes")
     
+    colorCell = {[0, 0.4470, 0.7410], [0.8500, 0.3250, 0.0980]};
+    for i=1:nBendingModesPlotting
+        lineInstances(i) = FEMBucklePlot(node_z, [0;0;0; bendingVectors(:,i)], ...
+                                        maxDisplacementVector(i), maxRotationVector(i), colorCell{i});
+    end
+    
     subplot(2,1,1)
-    title("Displacement")
+    legend(lineInstances, bendingLegend, 'location' ,'northwest')
     
-    hold on
-    for i = 1:nBendingModesPlotting
-        scatter(node_z, [0; bendingVectors(1:3:end,i)/maxDisplacementVector(i)], 'filled')
-    end
-    hold off
-    grid minor
-    legend(bendingLegend, "location", "northwest")
-    xlabel("z")
-    ylabel("u/u_{max}")
-    
-    
-    subplot(2,1,2)
-    title("Rotation")
-    hold on
-    for i = 1:nBendingModesPlotting
-        scatter(node_z, [0; bendingVectors(2:3:end,i)/maxRotationVector(i)], 'filled')
-    end
-    hold off
-    grid minor
-    xlabel("z")
-    ylabel("\theta/\theta_{max}")
+%     subplot(2,1,1)
+%     title("Displacement")
+%     
+%     hold on
+%     for i = 1:nBendingModesPlotting
+%         scatter(node_z, [0; bendingVectors(1:3:end,i)/maxDisplacementVector(i)], 'filled')
+%     end
+%     hold off
+%     grid minor
+%     legend(bendingLegend, "location", "northwest")
+%     xlabel("z")
+%     ylabel("u/u_{max}")
+%     
+%     
+%     subplot(2,1,2)
+%     title("Rotation")
+%     hold on
+%     for i = 1:nBendingModesPlotting
+%         scatter(node_z, [0; bendingVectors(2:3:end,i)/maxRotationVector(i)], 'filled')
+%     end
+%     hold off
+%     grid minor
+%     xlabel("z")
+%     ylabel("\theta/\theta_{max}")
     
     
     % Results are written to a text file
@@ -140,6 +150,54 @@ function [pb,ub]=buckle(Ks,Ksigmas,nnode,node_z);
 end
 
 
+function lineInstances = FEMBucklePlot(node_z, uVector, umax, tetamax, color)
+
+
+    lineInstances = cell(3,1);
+    % Functions N are necessary to get the shape of the beam between nodes
+
+    Nfun = @(x) [ 1      - 3*x.^2 + 2*x.^3 ; ...
+                 -x      + 2*x.^2 - x.^3   ; ...
+                  3*x.^2  - 2*x.^3         ; ...
+                  x.^2    - x.^3          ];
+
+    Bfun = @(x) [ -6*x + 6*x.^2             ; ...
+                  -1   + 4*x    - 3*x.^2    ; ...
+                  6*x  - 6*x.^2             ; ...
+                  2*x  - 3*x.^2             ];
+
+    subplot(2,1,1)
+    hold on
+    for i=1:length(node_z)
+        if i<length(node_z)
+            h = node_z(i+1) - node_z(i);
+            z = linspace(node_z(i), node_z(i+1), 20);
+            lineInstances = plot(z, Nfun(linspace(0,1,20))' * ([uVector(3*(i-1)+[1,2]); uVector(3*i+[1,2])].*[1;h;1;h])/umax,'LineWidth', 2, 'color', color);
+        end
+        scatter(node_z(i), uVector(3*(i-1)+1)/umax,'filled','MarkerFaceColor', color)
+    end
+    hold off
+    xlabel("z")
+    ylabel("u/u_{max}")
+    grid on
+    
+    
+    subplot(2,1,2)
+    hold on
+    for i=1:length(node_z)
+        if i<length(node_z)
+            h = node_z(i+1) - node_z(i);
+            z = linspace(node_z(i), node_z(i+1), 20);
+            plot(z, Bfun(linspace(0,1,20))' * ([uVector(3*(i-1)+[1,2]); uVector(3*i+[1,2])].*[1/h;1;1/h;1])/tetamax, 'LineWidth', 2, 'color', color);
+        end
+        scatter(node_z(i), -uVector(3*(i-1)+2)/tetamax,'filled','MarkerFaceColor', color)
+    end
+    hold off
+    xlabel("z")
+    ylabel("\theta/\theta_{max}")
+    grid on
+    
+end
 
 
 % Plot buckling modes
