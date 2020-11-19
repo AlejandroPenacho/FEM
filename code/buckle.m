@@ -1,146 +1,160 @@
-function [pb,ub]=buckle(Ks,Ksigmas,nnode,node_z);
+function [pb,ub]=buckle(Ks,Ksigmas,nnode,node_z,EI,L);
 
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Solve beam buckling equation
-    % File name: buckle.m
-    % 
-    % Ks		Structural stiffness matrix
-    % Ksigmas	Structural inital stiffness matrix
-    % nnode		Number of nodes
-    % node_z	Nodal x-coordinates
-    %
-    % pb		Matrix with eigenvalues (load factors) in diagonal
-    % ub		Corresponding matrix of eigenvectors (buckling modes)
-    % 	(Column i of ub shows the buckling mode for buckling load (i,i) in pb)
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Solve beam buckling equation
+% File name: buckle.m
+%
+% Ks		Structural stiffness matrix
+% Ksigmas	Structural inital stiffness matrix
+% nnode		Number of nodes
+% node_z	Nodal x-coordinates
+%
+% pb		Matrix with eigenvalues (load factors) in diagonal
+% ub		Corresponding matrix of eigenvectors (buckling modes)
+% 	(Column i of ub shows the buckling mode for buckling load (i,i) in pb)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    % Calculate eigenvalues and eigenvectors
-    [ub,pb] = eig(Ks, -Ksigmas);
+% Calculate eigenvalues and eigenvectors
+[ub,pb] = eig(Ks, -Ksigmas);
 
-    [ndof, ~] = size(Ks);
+[ndof, ~] = size(Ks);
 
-    % Split bending and twist modes into separate vectors
-    
-    % The "vector" variables are matrices with the vectors of the shapes of
-    % the different modes, while the "lambda" variables are the eigenvalues
-    % of those vectors.
+% Split bending and twist modes into separate vectors
 
-    bendingVectors = zeros(ndof);
-    bendingLambdas = zeros(ndof, 1);
-    nBendingModes = 0;
+% The "vector" variables are matrices with the vectors of the shapes of
+% the different modes, while the "lambda" variables are the eigenvalues
+% of those vectors.
 
-    twistVectors = zeros(ndof);
-    twistLambdas = zeros(ndof, 1);
-    nTwistModes = 0;
+bendingVectors = zeros(ndof);
+bendingLambdas = zeros(ndof, 1);
+nBendingModes = 0;
 
-    % To determine whether a mode is related to bending or twist, the value
-    % of the maximum value of phi is checked. If it is below a certain
-    % threhold, it is considered to be zero, so it is a bending mode.
-    
-    threshold = 1E-10;
+twistVectors = zeros(ndof);
+twistLambdas = zeros(ndof, 1);
+nTwistModes = 0;
 
-    for i=1:ndof
-        if max(abs(ub(3:3:end,i))) < threshold
-            nBendingModes = nBendingModes + 1;
-            bendingVectors(:,nBendingModes) = ub(:,i);
-            bendingLambdas(nBendingModes) = pb(i,i);
-        else
-            nTwistModes = nTwistModes + 1;
-            twistVectors(:,nTwistModes) = ub(:,i);
-            twistLambdas(nTwistModes) = pb(i,i);        
-        end
-    end
-    
-    % Vectors are trimmed
+% To determine whether a mode is related to bending or twist, the value
+% of the maximum value of phi is checked. If it is below a certain
+% threhold, it is considered to be zero, so it is a bending mode.
 
-    bendingVectors = bendingVectors(:,1:nBendingModes);
-    bendingLambdas = bendingLambdas(1:nBendingModes);
-    twistVectors = twistVectors(:,1:nTwistModes);
-    twistLambdas = twistLambdas(1:nTwistModes);
-    
-    
-    % Normalise deflections, rotations and twist for plotting purposes (without risking to mix up signs or divide by zero)
+threshold = 1E-10;
 
-    if nnode == 2
-        nBendingModesPlotting = 1;
+for i=1:ndof
+    if max(abs(ub(3:3:end,i))) < threshold
+        nBendingModes = nBendingModes + 1;
+        bendingVectors(:,nBendingModes) = ub(:,i);
+        bendingLambdas(nBendingModes) = pb(i,i);
     else
-        nBendingModesPlotting = 2;   
+        nTwistModes = nTwistModes + 1;
+        twistVectors(:,nTwistModes) = ub(:,i);
+        twistLambdas(nTwistModes) = pb(i,i);
     end
-    
-    %% Bending Modes
-    
-    
-    bendingLegend = cell(nBendingModesPlotting,1);
-    
-    for i=1:nBendingModesPlotting
-        bendingLegend{i} = sprintf("N_{z}= %.2f kN", bendingLambdas(i)/1000);
-    end
-    
-    % Max displacements and rotations are obtained
-    
-    maxDisplacementVector = max(abs(bendingVectors(1:3:end,:)));
-    maxRotationVector = max(abs(bendingVectors(2:3:end,:)));
-    
-    figure
-    sgtitle("Bending modes")
-    
-    subplot(2,1,1)
-    title("Displacement")
-    
-    hold on
-    for i = 1:nBendingModesPlotting
-        scatter(node_z, [0; bendingVectors(1:3:end,i)/maxDisplacementVector(i)], 'filled')
-    end
-    hold off
-    grid minor
-    legend(bendingLegend, "location", "northwest")
-    xlabel("z")
-    ylabel("u/u_{max}")
-    
-    
-    subplot(2,1,2)
-    title("Rotation")
-    hold on
-    for i = 1:nBendingModesPlotting
-        scatter(node_z, [0; bendingVectors(2:3:end,i)/maxRotationVector(i)], 'filled')
-    end
-    hold off
-    grid minor
-    xlabel("z")
-    ylabel("\theta/\theta_{max}")
-    
-    
-    % Results are written to a text file
-    
-    fID = fopen("output/results.txt", "a");
-    
-    fprintf(fID, "\n\n\nBending buckling modes\n\n");
-    
-    fprintf(fID, "Mode nº");
-    for i=1:nBendingModes
-        fprintf(fID, "\t\t\t%d", i);
-    end
-    
-    fprintf(fID, "\nLoad (kN)");
-    for i=1:nBendingModes
-        fprintf(fID, "\t\t%3f", bendingLambdas(i)/1000);
-    end    
-    
-    
-    
-    %% Twist Modes
-    
-    fprintf(fID, "\n\n\nTwist buckling\n\n");
-    if (max(twistLambdas)-min(twistLambdas))/max(twistLambdas) < 10^-10
-        fprintf(fID, "All eigenvalues for twist buckling coincide\n");
-        fprintf(fID, "Load (kN): %.3f", twistLambdas(1)/1000);
-    end
-      
-    fclose(fID);
+end
+
+% Vectors are trimmed
+
+bendingVectors = bendingVectors(:,1:nBendingModes);
+bendingLambdas = bendingLambdas(1:nBendingModes);
+twistVectors = twistVectors(:,1:nTwistModes);
+twistLambdas = twistLambdas(1:nTwistModes);
+
+
+% Normalise deflections, rotations and twist for plotting purposes (without risking to mix up signs or divide by zero)
+
+if nnode == 2
+    nBendingModesPlotting = 1;
+else
+    nBendingModesPlotting = 2;
+end
+
+%% Bending Modes
+
+
+bendingLegend = cell(nBendingModesPlotting,1);
+
+for i=1:nBendingModesPlotting
+    bendingLegend{i} = sprintf("N_{z}= %.2f kN", bendingLambdas(i)/1000);
+end
+
+% Max displacements and rotations are obtained
+
+maxDisplacementVector = max(abs(bendingVectors(1:3:end,:)));
+maxRotationVector = max(abs(bendingVectors(2:3:end,:)));
+
+figure
+sgtitle("Bending modes")
+
+subplot(2,1,1)
+title("Displacement")
+
+hold on
+for i = 1:nBendingModesPlotting
+    scatter(node_z, [0; bendingVectors(1:3:end,i)/maxDisplacementVector(i)], 'filled')
+end
+hold off
+grid minor
+legend(bendingLegend, "location", "northwest")
+xlabel("z")
+ylabel("u/u_{max}")
+
+
+subplot(2,1,2)
+title("Rotation")
+hold on
+for i = 1:nBendingModesPlotting
+    scatter(node_z, [0; bendingVectors(2:3:end,i)/maxRotationVector(i)], 'filled')
+end
+hold off
+grid minor
+xlabel("z")
+ylabel("\theta/\theta_{max}")
+
+% Critical load
+
+for m = 1:nBendingModes
+    P_cr(m) = ((2*m-1)^2 * pi^2 * EI)/(4*L^2);
+    Error_Load(m) = 100*(bendingLambdas(m)-P_cr(m))/P_cr(m);
+end
+
+
+% Results are written to a text file
+
+fID = fopen("output/results.txt", "a");
+
+fprintf(fID, "\n\n\nBending buckling modes\n\n");
+
+fprintf(fID, "Mode nº");
+for i=1:nBendingModes
+    fprintf(fID, "\t\t\t%d", i);
+end
+
+fprintf(fID, "\nLoad (kN)");
+for i=1:nBendingModes
+    fprintf(fID, "\t\t%.3f", bendingLambdas(i)/1000);
+end
+
+fprintf(fID, "\nAnalyticalLoad (kN)");
+for i=1:nBendingModes
+    fprintf(fID, "\t\t%.3f", P_cr(i)/1000);
+end
+
+fprintf(fID, "\nError_Loads (kN)");
+for i=1:nBendingModes
+    fprintf(fID, "\t\t%.3f", Error_Load(i));
 end
 
 
 
+%% Twist Modes
+
+fprintf(fID, "\n\n\nTwist buckling\n\n");
+if (max(twistLambdas)-min(twistLambdas))/max(twistLambdas) < 10^-10
+    fprintf(fID, "All eigenvalues for twist buckling coincide\n");
+    fprintf(fID, "Load (kN): %.3f", twistLambdas(1)/1000);
+end
+
+fclose(fID);
+end
 
 % Plot buckling modes
 
