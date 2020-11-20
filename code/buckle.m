@@ -37,7 +37,7 @@ function [pb,ub]=buckle(Ks,Ksigmas,nnode,node_z,EI,L);
     % of the maximum value of phi is checked. If it is below a certain
     % threhold, it is considered to be zero, so it is a bending mode.
     
-    threshold = 1E-10;
+    threshold = 1E-5;
 
     for i=1:ndof
         if max(abs(ub(3:3:end,i))) < threshold
@@ -109,22 +109,22 @@ function [pb,ub]=buckle(Ks,Ksigmas,nnode,node_z,EI,L);
 
 	fprintf(fID, "\n\n\nBending buckling modes\n\n");
 
-	fprintf(fID, "Mode nº");
+	fprintf(fID, "Mode nº\t\t");
 	for i=1:nBendingModes
 	    fprintf(fID, "\t\t\t%d", i);
 	end
 
-	fprintf(fID, "\nLoad (kN)");
+	fprintf(fID, "\nFEM load (kN)\t");
 	for i=1:nBendingModes
 	    fprintf(fID, "\t\t%.3f", bendingLambdas(i)/1000);
 	end
 
-	fprintf(fID, "\nAnalyticalLoad (kN)");
+	fprintf(fID, "\nAnlytcl. load (kN)");
 	for i=1:nBendingModes
 	    fprintf(fID, "\t\t%.3f", P_cr(i)/1000);
 	end
 
-	fprintf(fID, "\nError_Loads (kN)");
+	fprintf(fID, "\nError (%%)\t\t");
 	for i=1:nBendingModes
 	    fprintf(fID, "\t\t%.3f", Error_Load(i));
 	end

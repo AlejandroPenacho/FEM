@@ -11,7 +11,7 @@ fID = fopen("output/results.txt","w");
 fclose(fID);
 
 % Definitions and input data
-L=2;		% Length [m]
+L=1;		% Length [m]
 E=7E+10;	% Youngs modulus [N/m2]
 G=2.6923E+10;	% Shear modulus [N/m2]
 I=304E-9 / 3;		% Moment of inertia about x-axis [m4]
@@ -25,14 +25,14 @@ J0=I0*ro;	% Mass moment of inertia [kgm]
 
 % Loads and masses
 m=A*ro;	% mass per unit length of elements [kg/m]
-q=1;           % Distributed load [N/m]
+q=2.5;           % Distributed load [N/m]
 qt=1;		% Distributed torque [Nm/m]
-S=0;           % Concentrated load at end of beam [N]
-T=0;		% Beam end torque [Nm]
+S=-1;           % Concentrated load at end of beam [N]
+T=-0.7;		% Beam end torque [Nm]
 P=-1.;		% Buckling load [N]
 
 % Element input data
-nelem=20;		% number of elements
+nelem=10;		% number of elements
 le=L/nelem;		% length of elements for even distribution
 ndof=3*(nelem+1);	% number of degrees of freedom
 nnode=nelem+1;		% number of nodes

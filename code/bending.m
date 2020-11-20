@@ -56,9 +56,9 @@ fprintf(fID, "Max. bending angle:\t%.3f °\n", tetamax*180/pi );
 fprintf(fID, "Max. torsion angle:\t%.3f °\n", fimax*180/pi );
 
 fprintf(fID, "\nForces at clampped end:\n");
-fprintf(fID, "\t Shear force: %.3f N\n", RF(1));
-fprintf(fID, "\t Moment force: %.3f Nm\n", RF(2));
-fprintf(fID, "\t Torque: %.3f Nm\n", RF(3));
+fprintf(fID, "\t Shear force:\t%.3f N\n", RF(1));
+fprintf(fID, "\t Moment force:\t%.3f Nm\n", RF(2));
+fprintf(fID, "\t Torque:\t\t%.3f Nm\n", RF(3));
 
 fclose(fID);
 %Calculating analytical results to compare values
@@ -141,7 +141,7 @@ title("Phi")
 hold on
 h = plot(x*L, normalizedPhi_an, '--','LineWidth', 1.5,'color', [0.4660, 0.6740, 0.1880]);
 hold off
-legend([lineInstances{2}, h], ["FEM", "Analytical"],'location' ,'northwest')
+legend([lineInstances{3}, h], ["FEM", "Analytical"],'location' ,'northwest')
 
 end
 
