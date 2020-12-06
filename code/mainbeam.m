@@ -14,7 +14,8 @@ fclose(fID);
 L=1;		% Length [m]
 E=7E+10;	% Youngs modulus [N/m2]
 G=2.6923E+10;	% Shear modulus [N/m2]
-I=304E-9 / 3;		% Moment of inertia about x-axis [m4]
+% I=304E-9 / 3;		% Moment of inertia about x-axis [m4]
+I = 320000E-12 /7;  % Moment of inertia about y-axis [m4]
 J=2.2E-9 / 3;		% Torsional constant [m4]
 EI=E*I;		% Bending stiffness [Nm2]
 GJ=G*J;		% Torsional stiffness [Nm2]
@@ -23,12 +24,14 @@ A=2.8E-4;	% Cross-section area [m2]
 ro=2700;	% Material density [kg/m3]
 J0=I0*ro;	% Mass moment of inertia [kgm]
 
+x_SC = (3*40^2*40^2)/(4*I) * (10^-15);
+
 % Loads and masses
 m=A*ro;	% mass per unit length of elements [kg/m]
-q=2.5;           % Distributed load [N/m]
-qt=1;		% Distributed torque [Nm/m]
-S=-1;           % Concentrated load at end of beam [N]
-T=-0.7;		% Beam end torque [Nm]
+q=0;           % Distributed load [N/m]
+qt=0;		% Distributed torque [Nm/m]
+S=-100;           % Concentrated load at end of beam [N]
+T=S * x_SC;		% Beam end torque [Nm]
 P=-1.;		% Buckling load [N]
 
 % Element input data

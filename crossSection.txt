@@ -9,7 +9,7 @@ Area:
 
 X_cg (respect to lower left corner):
 
-	X_cg = (2 * t_f * b/2) / A = 3/7 mm
+	X_cg = (2 * t_f * b^2) / A = 120/7 mm
 
 Y_cg (respect to lower left corner):
 
@@ -18,6 +18,10 @@ Y_cg (respect to lower left corner):
 Ixx:
 
 	Ixx = (h^3 * t_w)/12 + (h^2 * b * t_f)/2 = 304,000/3 mm^4
+
+Iyy:
+    
+    Iyy = 2* [ (b^3 * t_f)/12 + b * t_f * (b/2 - X_cg)^2 ] + h * t_w * X_cg^2 = 320,000/7 mm^4
 
 J:
 
