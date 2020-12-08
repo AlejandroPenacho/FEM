@@ -1,0 +1,32 @@
+
+ PRINT ROT  NODAL SOLUTION PER NODE
+ 
+  ***** POST1 NODAL DEGREE OF FREEDOM LISTING *****                            
+ 
+  LOAD STEP=     1  SUBSTEP=     1                                             
+   TIME=    1.0000      LOAD CASE=   0                                         
+ 
+  THE FOLLOWING DEGREE OF FREEDOM RESULTS ARE IN THE GLOBAL COORDINATE SYSTEM  
+ 
+    NODE       ROTX  
+       2  0.98947E-002
+      42  0.98947E-002
+      43  0.97075E-002
+      44  0.96371E-002
+      45  0.95666E-002
+      46  0.95666E-002
+      47  0.95666E-002
+      48  0.96371E-002
+      49  0.97075E-002
+     291  0.10712E-001
+     331  0.10592E-001
+     332  0.10466E-001
+     333  0.10141E-001
+     414  0.10712E-001
+     415  0.10141E-001
+     416  0.10466E-001
+     417  0.10592E-001
+
+ MAXIMUM ABSOLUTE VALUES
+ NODE        291
+ VALUE   0.10712E-001
