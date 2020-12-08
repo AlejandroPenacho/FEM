@@ -2,7 +2,7 @@ clc; clear
 
 %% Extract data
 
-fID = fopen("nPOS.txt");
+fID = fopen("nPos.txt");
 for i=1:5
     fgetl(fID);
 end
@@ -26,6 +26,18 @@ zData = fscanf(fID,"%d %f");
 fclose(fID);
 
 dataArray(:,3) = zData(2:2:end);
+
+
+
+fID = fopen("xRot.txt");
+for i=1:11
+    fgetl(fID);
+end
+
+rotData = fscanf(fID,"%d %f");
+fclose(fID);
+
+rotation = mean(rotData(2:2:end));
 
 
 %% Substract rotation
