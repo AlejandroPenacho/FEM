@@ -29,6 +29,8 @@ dataArray(:,3) = zData(2:2:end);
 
 
 
+%% Substract rotation
+
 fID = fopen("xRot.txt");
 for i=1:11
     fgetl(fID);
@@ -39,15 +41,9 @@ fclose(fID);
 
 rotation = mean(rotData(2:2:end));
 
+rotation = 0.75 * rotation;
 
-%% Substract rotation
-
-lowerNode = dataArray(dataArray(:,1)==20 & dataArray(:,2)==0,:);
-upperNode = dataArray(dataArray(:,1)==20 & dataArray(:,2)==40,:);
-
-rotation = -(upperNode(3) - lowerNode(3))/40;
-
-dataArray(:,3) = dataArray(:,3) + rotation * (dataArray(:,2)-20);
+dataArray(:,3) = dataArray(:,3) - rotation * (dataArray(:,2)-20);
 
 %% Sort the nodes
 

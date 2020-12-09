@@ -1,0 +1,18 @@
+b       mm      Flange size
+h       mm      Web height
+t_f     mm      Thickness of flange (t_f)
+t_w     mm      Thickness of web (t_w)
+E       MPa     Stress module
+G       MPa     Shear modulus
+A       mm^2    Area of cross section
+x_cg    mm      X-pos of centroid
+y_cg    mm      Y-pos of centroid
+I_xx    mm^4    X Moment of inertia (I_xx)
+I_yy    mm^4    Y Moment of inertia (I_yy)
+J       mm^4    J
+x_sc    mm      X-pos of shear centre (negative)
+y_sc    mm      Y-pos of shear centre
+w_lc    mm      Warp of inner corners
+w_rc    mm      Warp of outer corners
+I_os    mm^4    I_os
+gamma_R mm^5    Gamma_R

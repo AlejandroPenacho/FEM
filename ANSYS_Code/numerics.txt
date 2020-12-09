@@ -1,0 +1,36 @@
+
+	Numerical values for the problem (all in mm, N):
+
+
+Flange size:						40.000			mm
+Web height:							40.000			mm
+Thickness of flange (t_f):			3.000			mm
+Thickness of web (t_w):				1.000			mm
+Stress module:						70000.000		MPa
+Shear modulus:						26923.077		MPa
+Area of cross section:				280.000			mm^2
+X-pos of centroid:					17.143			mm
+Y-pos of centroid:					20.000			mm
+X Moment of inertia (I_xx):			101333.333		mm^4
+Y Moment of inertia (I_yy):			45714.286		mm^4
+J:									733.333			mm^4
+X-pos of shear centre (negative):	18.947			mm
+Y-pos of shear centre:				20.000			mm
+Warp of inner corners:				0.036			mm
+Warp of outer corners:				0.040			mm
+I_os:								147959.372		mm^4
+Gamma_R:							14821052.632	mm^5
+
+
+
+
+	Buckling loads:
+
+
+Direction	|	500 mm			1000 mm			2000 mm
+------------+---------------------------------------------
+Euler horz.	|	31582.7 N		7895.7 N		1973.9 N
+Euler vert.	|	70008.4 N		17502.1 N		4375.5 N
+Torsional	|	114872.0 N		56740.3 N		42207.3 N
+Combined	|	60920.2 N		17795.7 N		5366.0 N
+Local		|	42446.2 N		42446.2 N		42446.2 N
