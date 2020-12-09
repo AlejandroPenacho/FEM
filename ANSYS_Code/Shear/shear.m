@@ -121,15 +121,26 @@ w_coeff = (S/(2*I_xx)) * [-t_w, h*t_w, h*b*t_f];
 nPoints = 100;
 
 figure
-scatter3(finalData(:,2), finalData(:,3), zeros(nNodes,1), "filled")
+scatter3(-(finalData(:,2)-40), zeros(nNodes,1), finalData(:,3), "filled")
 hold on
-h(1) = plot3(finalData(:,2), finalData(:,3), finalData(:,4), "LineWidth", 2);
+h(1) = plot3(-(finalData(:,2)-40), finalData(:,4), finalData(:,3), "LineWidth", 2);
 
-h(2) = plot3(linspace(40,0,nPoints), zeros(nPoints,1), linspace(0,40,nPoints) * m_f, "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
-plot3(linspace(40,0,nPoints), 40 + zeros(nPoints,1), linspace(0,40,nPoints) * m_f, "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
-plot3(zeros(nPoints,1), linspace(0,40,nPoints), ...
-      w_coeff(1) * linspace(0,40,nPoints).^2 + w_coeff(2) * linspace(0,40,nPoints) + w_coeff(3) * ones(1, nPoints), ...
+h(2) = plot3(linspace(0,40,nPoints), linspace(0,40,nPoints) * m_f, zeros(nPoints,1), "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
+plot3(linspace(0,40,nPoints), linspace(0,40,nPoints) * m_f, 40 + zeros(nPoints,1), "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
+plot3(zeros(nPoints,1)+40,...
+    w_coeff(1) * linspace(0,40,nPoints).^2 + w_coeff(2) * linspace(0,40,nPoints) + w_coeff(3) * ones(1, nPoints), ...
+    linspace(0,40,nPoints), ...
       "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
+  
+% scatter3(finalData(:,2), finalData(:,3), zeros(nNodes,1), "filled")
+% hold on
+% h(1) = plot3(finalData(:,2), finalData(:,3), finalData(:,4), "LineWidth", 2);
+% 
+% h(2) = plot3(linspace(40,0,nPoints), zeros(nPoints,1), linspace(0,40,nPoints) * m_f, "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
+% plot3(linspace(40,0,nPoints), 40 + zeros(nPoints,1), linspace(0,40,nPoints) * m_f, "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
+% plot3(zeros(nPoints,1), linspace(0,40,nPoints), ...
+%       w_coeff(1) * linspace(0,40,nPoints).^2 + w_coeff(2) * linspace(0,40,nPoints) + w_coeff(3) * ones(1, nPoints), ...
+%       "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
 hold off
 
 title("Shear stress distribution at z=L/2")
