@@ -28,7 +28,7 @@ T = x_sc * S;
 w_lc = h*x_sc/2 * T/(G*J);
 w_rc = -(h*x_sc/2 - h*b/2) * T/(G*J);
 
-I_os = I_xx + I_yy + A*((x_sc - x_cg)^2+(y_sc-y_cg)^2);
+I_os = I_xx + I_yy + A*((x_sc + x_cg)^2+(y_sc-y_cg)^2);
 
 %% Gamma_R
 
@@ -91,7 +91,7 @@ for i=1:3
                    I_os/A * (P_cr_x + P_cr_y + P_cr_theta)];
 
     provisional = roots(coefficients);
-    buckling_combined(i) = max(provisional);
+    buckling_combined(i) = provisional(2);
     
 end
 
