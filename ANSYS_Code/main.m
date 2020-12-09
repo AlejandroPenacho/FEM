@@ -32,15 +32,6 @@ I_os = I_xx + I_yy + A*((x_sc + x_cg)^2+(y_sc-y_cg)^2);
 
 %% Gamma_R
 
-% Taking 0 as the edge of the cross section
-
-% gamma_R1 = (2/3)*h^2*b^2 * t_f;
-% gamma_R2 = -h^3/(3*x_sc) * ( (b/2 - x_sc)^3 - b^3 / 8 ) * t_w;
-% gamma_R3 = 2*h^2/3 * ( (b-x_sc)^3 - (b/2 - x_sc)^3 ) * t_f;
-% 
-% gamma_R = gamma_R1 + gamma_R2 + gamma_R3;
-
-
 % Taking 0 as the center of symmetry
 
 gamma_R1 = (x_sc^2*h^3)/24 * t_w;
@@ -91,7 +82,15 @@ for i=1:3
                    I_os/A * (P_cr_x + P_cr_y + P_cr_theta)];
 
     provisional = roots(coefficients);
-    buckling_combined(i) = provisional(2);
+%     buckling_combined(i) = provisional(2);
+
+
+    base = (P_cr_theta + P_cr_x)/(2 * (1 - A*x_s^2/I_os));
+
+    delta = sqrt( ((P_cr_theta + P_cr_x)/(2*(1-A*x_s^2/I_os)))^2 - ...
+                  P_cr_x*P_cr_theta / (1 - A*x_s^2/I_os));
+              
+    buckling_combined(i) = base - delta;
     
 end
 
