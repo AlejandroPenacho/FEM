@@ -120,32 +120,35 @@ w_coeff = (S/(2*I_xx)) * [-t_w, h*t_w, h*b*t_f];
 %% Plot results
 nPoints = 100;
 
-figure
-scatter3(-(finalData(:,2)-40), zeros(nNodes,1), finalData(:,3), "filled")
-hold on
-h(1) = plot3(-(finalData(:,2)-40), finalData(:,4), finalData(:,3), "LineWidth", 2);
+% figure
+% scatter3(-(finalData(:,2)-40), zeros(nNodes,1), finalData(:,3), "filled")
+% hold on
+% h(1) = plot3(-(finalData(:,2)-40), finalData(:,4), finalData(:,3), "LineWidth", 2);
+% 
+% h(2) = plot3(linspace(0,40,nPoints), linspace(0,40,nPoints) * m_f, zeros(nPoints,1), "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
+% plot3(linspace(0,40,nPoints), linspace(0,40,nPoints) * m_f, 40 + zeros(nPoints,1), "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
+% plot3(zeros(nPoints,1)+40,...
+%     w_coeff(1) * linspace(0,40,nPoints).^2 + w_coeff(2) * linspace(0,40,nPoints) + w_coeff(3) * ones(1, nPoints), ...
+%     linspace(0,40,nPoints), ...
+%       "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
 
-h(2) = plot3(linspace(0,40,nPoints), linspace(0,40,nPoints) * m_f, zeros(nPoints,1), "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
-plot3(linspace(0,40,nPoints), linspace(0,40,nPoints) * m_f, 40 + zeros(nPoints,1), "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
-plot3(zeros(nPoints,1)+40,...
+figure
+scatter3(finalData(:,2), zeros(nNodes,1), finalData(:,3), "filled")
+hold on
+h(1) = plot3(finalData(:,2), finalData(:,4), finalData(:,3), "LineWidth", 2);
+
+h(2) = plot3(linspace(40,0,nPoints), linspace(0,40,nPoints) * m_f, zeros(nPoints,1), "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
+plot3(linspace(40,0,nPoints), linspace(0,40,nPoints) * m_f, 40 + zeros(nPoints,1), "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
+plot3(zeros(nPoints,1), ...
     w_coeff(1) * linspace(0,40,nPoints).^2 + w_coeff(2) * linspace(0,40,nPoints) + w_coeff(3) * ones(1, nPoints), ...
     linspace(0,40,nPoints), ...
       "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
-  
-% scatter3(finalData(:,2), finalData(:,3), zeros(nNodes,1), "filled")
-% hold on
-% h(1) = plot3(finalData(:,2), finalData(:,3), finalData(:,4), "LineWidth", 2);
-% 
-% h(2) = plot3(linspace(40,0,nPoints), zeros(nPoints,1), linspace(0,40,nPoints) * m_f, "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
-% plot3(linspace(40,0,nPoints), 40 + zeros(nPoints,1), linspace(0,40,nPoints) * m_f, "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
-% plot3(zeros(nPoints,1), linspace(0,40,nPoints), ...
-%       w_coeff(1) * linspace(0,40,nPoints).^2 + w_coeff(2) * linspace(0,40,nPoints) + w_coeff(3) * ones(1, nPoints), ...
-%       "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
+  view(135,20);
 hold off
 
 title("Shear stress distribution at z=L/2")
 xlabel("X (mm)")
-ylabel("Y (mm)")
-zlabel("q (N/mm)")
+ylabel("q (N/mm)")
+zlabel("Y (mm)")
 
 legend(h, "ANSYS", "Analytical")
