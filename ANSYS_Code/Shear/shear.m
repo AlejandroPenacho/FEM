@@ -94,9 +94,9 @@ finalData(:,1:3) = [firstFlange(firstFlangeIndex,1:3);
              secondFlange(secondFlangeIndex,1:3); 
              thirdFlange(thirdFlangeIndex,1:3)];
 
-finalData(:,4) = [firstFlange(firstFlangeIndex,5) * 3; 
+finalData(:,4) = [firstFlange(firstFlangeIndex,5); 
              -secondFlange(secondFlangeIndex,4); 
-             -thirdFlange(thirdFlangeIndex,5) * 3];
+             -thirdFlange(thirdFlangeIndex,5)];
 
 finalData = finalData(~isnan(finalData(:,4)),:);
 
@@ -111,7 +111,7 @@ t_w = 1;
 b = 40;
 I_xx = 101333.333;
 
-m_f = h*t_f / (2*I_xx) * S;
+m_f = h*t_f / (2*I_xx) * S / 3;
 
 w_coeff = (S/(2*I_xx)) * [-t_w, h*t_w, h*b*t_f];
 
@@ -148,7 +148,7 @@ hold off
 
 title("Shear stress distribution at z=L/2")
 xlabel("X (mm)")
-ylabel("q (N/mm)")
+ylabel("q (N/mm^2)")
 zlabel("Y (mm)")
 
 legend(h, "ANSYS", "Analytical")
