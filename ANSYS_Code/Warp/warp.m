@@ -73,13 +73,14 @@ limitW2 = -20 * (360/19 - 40) * T/(G*J);
          
 %% Plot results
 figure
-scatter3(dataArray(:,1), dataArray(:,2), zeros(nNodes,1), "filled")
+scatter3(dataArray(:,1), zeros(nNodes,1), dataArray(:,2), "filled")
 hold on
-h(1) = plot3(dataArray(:,1), dataArray(:,2), dataArray(:,3), "LineWidth", 2);
+h(1) = plot3(dataArray(:,1), dataArray(:,3), dataArray(:,2), "LineWidth", 2);
 
-h(2) = plot3([0,40], [0,0], [-limitW1, limitW2], "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
-plot3([0,0], [0,40], [-limitW1, limitW1], "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
-plot3([0,40], [40,40], [limitW1, -limitW2], "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
+h(2) = plot3([0,40], [-limitW1, limitW2], [0,0], "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
+plot3([0,0], [-limitW1, limitW1], [0,40], "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
+plot3([0,40], [limitW1, -limitW2], [40,40], "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
+view(135,20);
 hold off
 
 title("Warping distribution at z=L")
