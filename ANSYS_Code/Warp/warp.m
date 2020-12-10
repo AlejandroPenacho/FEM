@@ -85,8 +85,8 @@ hold off
 
 title("Warping distribution at z=L")
 xlabel("X (mm)")
-ylabel("Y (mm)")
-zlabel("w (mm)")
+ylabel("w (mm)")
+zlabel("Y (mm)")
 
 
 legend(h, "ANSYS", "Analytical")

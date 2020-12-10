@@ -133,6 +133,7 @@ nPoints = 100;
 %       "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
 
 figure
+hAxis = axes;
 scatter3(finalData(:,2), zeros(nNodes,1), finalData(:,3), "filled")
 hold on
 h(1) = plot3(finalData(:,2), finalData(:,4), finalData(:,3), "LineWidth", 2);
@@ -144,6 +145,12 @@ plot3(zeros(nPoints,1), ...
     linspace(0,40,nPoints), ...
       "color", [0.4940, 0.1840, 0.5560], "LineWidth", 2);
   view(135,20);
+% hAxis.XAxis.FirstCrossoverValue  = hAxis.XLim(1); 
+% hAxis.XAxis.SecondCrossoverValue = hAxis.XLim(1);
+% hAxis.YAxis.FirstCrossoverValue  = hAxis.XLim(1); 
+% hAxis.YAxis.SecondCrossoverValue = hAxis.XLim(1);
+% hAxis.ZAxis.FirstCrossoverValue  = hAxis.XLim(1); 
+% hAxis.ZAxis.SecondCrossoverValue = hAxis.XLim(1);
 hold off
 
 title("Shear stress distribution at z=L/2")
